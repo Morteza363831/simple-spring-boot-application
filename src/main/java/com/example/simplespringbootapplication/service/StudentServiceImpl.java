@@ -51,8 +51,20 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<StudentDto> findStudentsByNameEndingWith() {
-        List<Student> studentList = (List<Student>) studentRepository.findStudentByNameEndingWith();
+    public List<StudentDto> findStudentsByNameEndingWith(String endingWith) {
+        List<Student> studentList = (List<Student>) studentRepository.findStudentByNameEndingWith(endingWith);
+        List<StudentDto> studentDtoList = new ArrayList<>();
+        for (Student student : studentList) {
+            StudentDto studentDto = modelMapper.map(student, StudentDto.class);
+            studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
+            studentDtoList.add(studentDto);
+        }
+        return studentDtoList;
+    }
+
+    @Override
+    public List<StudentDto> findStudentsByNameStartingWith(String name) {
+        List<Student> studentList = (List<Student>) studentRepository.findStudentByNameStartingWith(name);
         List<StudentDto> studentDtoList = new ArrayList<>();
         for (Student student : studentList) {
             StudentDto studentDto = modelMapper.map(student, StudentDto.class);

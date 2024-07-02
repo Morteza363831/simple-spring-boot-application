@@ -42,7 +42,13 @@ public class StudentController {
 
     @GetMapping("students/byEndName")
     public ResponseEntity<List<StudentDto>> getStudentsByEndName() {
-        List<StudentDto> studentDtos = this.studentService.findStudentsByNameEndingWith();
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameEndingWith("%a");
+        return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
+    }
+
+    @GetMapping("students/byStartName")
+    public ResponseEntity<List<StudentDto>> getStudentsByStartName() {
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameStartingWith("m");
         return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
     }
 

@@ -13,5 +13,7 @@ public interface StudentService {
 
     List<StudentDto> findAllStudents();
 
-    List<StudentDto> findStudentsByNameEndingWith();
+    List<StudentDto> findStudentsByNameEndingWith(String endingWith);
+
+    List<StudentDto> findStudentsByNameStartingWith(String name);
 }

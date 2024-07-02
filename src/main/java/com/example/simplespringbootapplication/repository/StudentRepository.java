@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<Student,Long> {
 
-    @Query(value = "SELECT * FROM student s WHERE s.name like '%a'", nativeQuery = true)
-    List<Student> findStudentByNameEndingWith();
+    @Query(value = "SELECT * FROM student s WHERE s.name like ?1", nativeQuery = true)
+    List<Student> findStudentByNameEndingWith(String endingWith);
+
+    List<Student> findStudentByNameStartingWith(String name);
 }
