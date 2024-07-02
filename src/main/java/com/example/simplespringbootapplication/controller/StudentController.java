@@ -5,20 +5,27 @@ import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.service.StudentService;
 import com.example.simplespringbootapplication.service.StudentServiceImpl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class StudentController {
 
     private final StudentService studentService;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.studentService = studentService;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
 
@@ -35,9 +42,12 @@ public class StudentController {
     }
 
     @GetMapping("students/all")
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-        List<StudentDto> studentDtos = this.studentService.findAllStudents();
-        return new ResponseEntity<List<StudentDto>>(studentDtos, HttpStatus.OK);
+    public ResponseEntity<List<StudentDto>> getAllStudents(
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "2") Integer pageSize) {
+
+        List<StudentDto> allStudents = this.studentService.findAllStudents(pageNumber,pageSize);
+        return new ResponseEntity<List<StudentDto>>(allStudents, HttpStatus.OK);
     }
 
     @GetMapping("students/byEndName")

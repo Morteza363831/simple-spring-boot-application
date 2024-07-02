@@ -5,6 +5,7 @@ import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,13 +40,18 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<StudentDto> findAllStudents() {
-        List<Student> studentList = (List<Student>) studentRepository.findAll();
+    public List<StudentDto> findAllStudents(int pageNumber, int pageSize) {
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
+        Page<Student> studentPage = studentRepository.findAll(pageable);
         List<StudentDto> studentDtoList = new ArrayList<>();
-        for (Student student : studentList) {
-            StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-            studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
-            studentDtoList.add(studentDto);
+        if (studentPage.hasContent()) {
+            for (Student student : studentPage.getContent()) {
+                StudentDto studentDto = modelMapper.map(student, StudentDto.class);
+                studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
+                studentDtoList.add(studentDto);
+            }
         }
         return studentDtoList;
     }
@@ -73,6 +79,8 @@ public class StudentServiceImpl implements StudentService{
         }
         return studentDtoList;
     }
+
+
 
 
 }
