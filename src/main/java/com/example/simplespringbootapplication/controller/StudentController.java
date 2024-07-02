@@ -40,6 +40,12 @@ public class StudentController {
         return new ResponseEntity<List<StudentDto>>(studentDtos, HttpStatus.OK);
     }
 
+    @GetMapping("students/byEndName")
+    public ResponseEntity<List<StudentDto>> getStudentsByEndName() {
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameEndingWith();
+        return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
+    }
+
 
 
 }

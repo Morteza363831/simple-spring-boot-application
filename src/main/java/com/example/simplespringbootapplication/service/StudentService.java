@@ -12,4 +12,6 @@ public interface StudentService {
     StudentDto findStudentById(Long id);
 
     List<StudentDto> findAllStudents();
+
+    List<StudentDto> findStudentsByNameEndingWith();
 }
