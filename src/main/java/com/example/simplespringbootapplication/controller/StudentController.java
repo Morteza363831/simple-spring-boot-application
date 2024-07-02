@@ -1,11 +1,16 @@
 package com.example.simplespringbootapplication.controller;
 
+import com.example.simplespringbootapplication.dto.StudentDto;
 import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.service.StudentService;
 import com.example.simplespringbootapplication.service.StudentServiceImpl;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StudentController {
@@ -16,27 +21,23 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("welcome")
-    public String welcome() {
-        Student student = new Student();
-        student.setId(1L);
-        student.setName("morteza");
-        student.setPassword("363831");
-        studentService.addStudent(student);
-
-        Student result = studentService.findStudentById(1L);
-
-        return result.getName() + " " + result.getPassword();
-    }
 
     @GetMapping("students/{studentId}")
-    public Student getStudent(@PathVariable long studentId) {
-        return studentService.findStudentById(studentId);
+    public ResponseEntity<StudentDto> getStudent(@PathVariable long studentId) {
+        StudentDto studentDto = studentService.findStudentById(studentId);
+        return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
     }
 
     @PostMapping("students")
-    public Student addStudent(@RequestBody Student student) {
-        return studentService.addStudent(student);
+    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+        Student student1 = this.studentService.addStudent(student);
+        return new ResponseEntity<Student>(student1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("students/all")
+    public ResponseEntity<List<StudentDto>> getAllStudents() {
+        List<StudentDto> studentDtos = this.studentService.findAllStudents();
+        return new ResponseEntity<List<StudentDto>>(studentDtos, HttpStatus.OK);
     }
 
 
