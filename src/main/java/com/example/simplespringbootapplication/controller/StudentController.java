@@ -3,9 +3,9 @@ package com.example.simplespringbootapplication.controller;
 import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.service.StudentService;
 import com.example.simplespringbootapplication.service.StudentServiceImpl;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class StudentController {
@@ -27,6 +27,16 @@ public class StudentController {
         Student result = studentService.findStudentById(1L);
 
         return result.getName() + " " + result.getPassword();
+    }
+
+    @GetMapping("students/{studentId}")
+    public Student getStudent(@PathVariable long studentId) {
+        return studentService.findStudentById(studentId);
+    }
+
+    @PostMapping("students")
+    public Student addStudent(@RequestBody Student student) {
+        return studentService.addStudent(student);
     }
 
 

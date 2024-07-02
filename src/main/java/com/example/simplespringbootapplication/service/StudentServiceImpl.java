@@ -2,7 +2,6 @@ package com.example.simplespringbootapplication.service;
 
 import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +17,9 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public void addStudent(Student student) {
+    public Student addStudent(Student student) {
         studentRepository.save(student);
+        return student;
     }
 
     @Override
