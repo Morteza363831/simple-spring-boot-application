@@ -4,6 +4,7 @@ import com.example.simplespringbootapplication.dto.StudentDto;
 import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,6 @@ public class StudentServiceImpl implements StudentService{
     public StudentDto findStudentById(Long id) {
         Student student = studentRepository.findById(id).get();
         StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-        studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
         return studentDto;
     }
 
@@ -48,8 +48,9 @@ public class StudentServiceImpl implements StudentService{
         List<StudentDto> studentDtoList = new ArrayList<>();
         if (studentPage.hasContent()) {
             for (Student student : studentPage.getContent()) {
+                System.out.println(student.getCity());
                 StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-                studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
+                System.out.println(studentDto.getAddress());
                 studentDtoList.add(studentDto);
             }
         }
@@ -58,11 +59,10 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public List<StudentDto> findStudentsByNameEndingWith(String endingWith) {
-        List<Student> studentList = (List<Student>) studentRepository.findStudentByNameEndingWith(endingWith);
+        List<Student> studentList = studentRepository.findStudentByNameEndingWith(endingWith);
         List<StudentDto> studentDtoList = new ArrayList<>();
         for (Student student : studentList) {
             StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-            studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
             studentDtoList.add(studentDto);
         }
         return studentDtoList;
@@ -70,11 +70,10 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public List<StudentDto> findStudentsByNameStartingWith(String name) {
-        List<Student> studentList = (List<Student>) studentRepository.findStudentByNameStartingWith(name);
+        List<Student> studentList = studentRepository.findStudentByNameStartingWith(name);
         List<StudentDto> studentDtoList = new ArrayList<>();
         for (Student student : studentList) {
             StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-            studentDto.setAddress("city : " + student.getCity() + "- street : " + student.getStreet() + "- plaque : " + student.getPlaqueNumber());
             studentDtoList.add(studentDto);
         }
         return studentDtoList;

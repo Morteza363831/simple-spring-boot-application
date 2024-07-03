@@ -56,9 +56,9 @@ public class StudentController {
         return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
     }
 
-    @GetMapping("students/byStartName")
-    public ResponseEntity<List<StudentDto>> getStudentsByStartName() {
-        List<StudentDto> studentDtos = this.studentService.findStudentsByNameStartingWith("m");
+    @GetMapping("students/byStartName/{startingWith}")
+    public ResponseEntity<List<StudentDto>> getStudentsByStartName(@PathVariable String startingWith) {
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameStartingWith(startingWith);
         return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
     }
 
