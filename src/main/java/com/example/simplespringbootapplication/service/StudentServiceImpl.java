@@ -2,6 +2,7 @@ package com.example.simplespringbootapplication.service;
 
 import com.example.simplespringbootapplication.dto.StudentDto;
 import com.example.simplespringbootapplication.entity.Student;
+import com.example.simplespringbootapplication.mapper.AutoStudentMapper;
 import com.example.simplespringbootapplication.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -49,7 +50,8 @@ public class StudentServiceImpl implements StudentService{
         if (studentPage.hasContent()) {
             for (Student student : studentPage.getContent()) {
                 System.out.println(student.getCity());
-                StudentDto studentDto = modelMapper.map(student, StudentDto.class);
+                StudentDto studentDto = AutoStudentMapper.MAPPER.mapToStudentDto(student);
+                //StudentDto studentDto = modelMapper.map(student, StudentDto.class);
                 System.out.println(studentDto.getAddress());
                 studentDtoList.add(studentDto);
             }
