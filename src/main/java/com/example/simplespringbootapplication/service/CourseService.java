@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CourseService {
 
-    Course addCourse(Course course);
+    Course addCourse(CourseDto addCourseDto);
 
     List<CourseDto> findAllCourses();
 

@@ -6,8 +6,6 @@ import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.mapper.AutoStudentMapper;
 import com.example.simplespringbootapplication.repository.StudentRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,7 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService{
 
 
+    // inject student repo using constructor not autowired notation
     private final StudentRepository studentRepository;
 
     private ModelMapper modelMapper;
@@ -27,7 +26,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
-
+    // add student to table
     @Override
     public Student addStudent(StudentDto addStudentDto) {
         Student addStudent = modelMapper.map(addStudentDto,Student.class);
@@ -35,6 +34,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
+    //update student (add courses to it)
     @Override
     public Student updateStudent(Student updateStudent) {
         for (Course c : updateStudent.getCourses()) {
@@ -45,6 +45,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
+    //find student by id
     @Override
     public StudentDto findStudentById(Long id) {
         Student student = studentRepository.findById(id).get();
@@ -53,6 +54,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
+    //find all students and make it pageable
     @Override
     public List<StudentDto> findAllStudents(int pageNumber, int pageSize) {
 
@@ -71,9 +73,10 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
+    //find students where names end with
     @Override
-    public List<StudentDto> findStudentsByNameEndingWith(String endingWith) {
-        List<Student> studentList = studentRepository.findStudentByNameEndingWith(endingWith);
+    public List<StudentDto> findStudentsByNameEndsWith(String endsWith) {
+        List<Student> studentList = studentRepository.findStudentByNameEndingWith(endsWith);
         List<StudentDto> studentDtoList = new ArrayList<>();
         for (Student student : studentList) {
             StudentDto studentDto = modelMapper.map(student, StudentDto.class);
@@ -83,9 +86,10 @@ public class StudentServiceImpl implements StudentService{
     }
 
 
+    // find students where names start with
     @Override
-    public List<StudentDto> findStudentsByNameStartingWith(String name) {
-        List<Student> studentList = studentRepository.findStudentByNameStartingWith(name);
+    public List<StudentDto> findStudentsByNameStartsWith(String startsWith) {
+        List<Student> studentList = studentRepository.findStudentByNameStartingWith(startsWith);
         List<StudentDto> studentDtoList = new ArrayList<>();
         for (Student student : studentList) {
             StudentDto studentDto = modelMapper.map(student, StudentDto.class);

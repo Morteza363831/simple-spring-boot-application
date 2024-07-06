@@ -19,7 +19,7 @@ public interface StudentService {
 
     List<StudentDto> findAllStudents(int pageNumber, int pageSize);
 
-    List<StudentDto> findStudentsByNameEndingWith(String endingWith);
+    List<StudentDto> findStudentsByNameEndsWith(String endingWith);
 
-    List<StudentDto> findStudentsByNameStartingWith(String name);
+    List<StudentDto> findStudentsByNameStartsWith(String name);
 }

@@ -2,8 +2,8 @@ package com.example.simplespringbootapplication.dto;
 
 import lombok.Data;
 
-import java.util.List;
 
+// writer dto
 @Data
 public class StudentDto {
     long id;

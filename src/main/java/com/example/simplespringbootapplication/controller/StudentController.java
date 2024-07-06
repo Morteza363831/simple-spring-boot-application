@@ -25,17 +25,18 @@ import java.util.List;
 @RestController
 public class StudentController {
 
+    // inject dependencies
     private final StudentService studentService;
     private final CourseService courseService;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public StudentController(StudentService studentService, NamedParameterJdbcTemplate namedParameterJdbcTemplate, CourseService courseService) {
+    public StudentController(StudentService studentService,
+                             CourseService courseService) {
         this.studentService = studentService;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.courseService = courseService;
     }
 
 
+    // get student by id
     @GetMapping("students/{studentId}")
     public ResponseEntity<StudentDto> getStudent(@PathVariable long studentId) {
         StudentDto studentDto = studentService.findStudentById(studentId);
@@ -43,32 +44,42 @@ public class StudentController {
     }
 
 
+    // add student
     @PostMapping("students")
     public ResponseEntity<Student> addStudent(@RequestBody StudentDto addStudentDto) {
         Student student = this.studentService.addStudent(addStudentDto);
         return new ResponseEntity<Student>(student, HttpStatus.CREATED);
     }
 
+    /* update student (add courses to student) here we will call the add course method to add new
+    * courses ! */
     @PostMapping("students/{studentId}/{coursesName}")
     public ResponseEntity<Student> addCoursesToStudent(@PathVariable long studentId,
                                                        @PathVariable String coursesName) {
+        // list of courses
         List<String> coursesNamesList = Arrays.stream(coursesName.split(",")).toList();
         StudentDto studentDto = studentService.findStudentById(studentId);
         Student student = AutoStudentMapper.studentMapper.mapToStudent(studentDto);
+        // this list is for student with studentId
         List<Course> courses = new ArrayList<>();
+        // add courses to course table
         for (String courseName : coursesNamesList) {
-            Course course = new Course();
-            course.setCourseName(courseName);
-            course.setSemester("spring");
+            CourseDto courseDto = new CourseDto();
+            courseDto.setCourseName(courseName);
+            courseDto.setSemester("spring");
+            // map courseDto to course
+            Course course = courseService.addCourse(courseDto);
+            // add student id to course table --> refference to student table
             course.setStudent(student);
-            courseService.addCourse(course);
             courses.add(course);
         }
+        // set student courses
         student.setCourses(courses);
         return new ResponseEntity<Student>(studentService.updateStudent(student),HttpStatus.OK);
     }
 
 
+    // get all students from db and make it pageable !!
     @GetMapping("students/all")
     public ResponseEntity<List<StudentDto>> getAllStudents(
             @RequestParam(defaultValue = "0") Integer pageNumber,
@@ -79,16 +90,18 @@ public class StudentController {
     }
 
 
-    @GetMapping("students/byEndName")
+    // get students which names end with namesEndWith
+    @GetMapping("students/namesEndWith")
     public ResponseEntity<List<StudentDto>> getStudentsByEndName() {
-        List<StudentDto> studentDtos = this.studentService.findStudentsByNameEndingWith("%a");
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameEndsWith("%a");
         return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
     }
 
 
-    @GetMapping("students/byStartName/{startingWith}")
-    public ResponseEntity<List<StudentDto>> getStudentsByStartName(@PathVariable String startingWith) {
-        List<StudentDto> studentDtos = this.studentService.findStudentsByNameStartingWith(startingWith);
+    // get students which names start with namesStartWith
+    @GetMapping("students/byStartName/{namesStartingWith}")
+    public ResponseEntity<List<StudentDto>> getStudentsByStartName(@PathVariable String namesStartingWith) {
+        List<StudentDto> studentDtos = this.studentService.findStudentsByNameStartsWith(namesStartingWith);
         return new ResponseEntity<List<StudentDto>>(studentDtos,HttpStatus.OK);
     }
 
