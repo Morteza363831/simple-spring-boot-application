@@ -60,4 +60,12 @@ public class CourseServiceImpl implements CourseService{
     public Course findCourseById(long id) {
         return courseRepository.findById(id);
     }
+
+
+    public boolean isCourseNameValid(String courseName) {
+        if (courseName.contains("a")) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -15,4 +15,6 @@ public interface CourseService {
     List<CourseDto> findCoursesBySemester(String semester);
 
     Course findCourseById(long id);
+
+    boolean isCourseNameValid(String courseName);
 }

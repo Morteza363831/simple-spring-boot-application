@@ -1,5 +1,6 @@
 package com.example.simplespringbootapplication.controller;
 
+import com.example.simplespringbootapplication.aop.ValidateCourses;
 import com.example.simplespringbootapplication.dto.CourseDto;
 import com.example.simplespringbootapplication.dto.StudentDto;
 import com.example.simplespringbootapplication.entity.Course;
@@ -54,6 +55,7 @@ public class StudentController {
     /* update student (add courses to student) here we will call the add course method to add new
     * courses ! */
     @PostMapping("students/{studentId}/{coursesName}")
+    @ValidateCourses
     public ResponseEntity<Student> addCoursesToStudent(@PathVariable long studentId,
                                                        @PathVariable String coursesName) {
         // list of courses

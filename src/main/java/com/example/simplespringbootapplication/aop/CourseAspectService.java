@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourseAspectService {
 
-    @Before(value = "execution(* com.example.simplespringbootapplication.controller.CourseController.findAllCourses(..))")
+    @Before(value = "execution(* com.example.simplespringbootapplication.controller.CourseController.*(..))")
     public void before(JoinPoint joinPoint) {
+        System.out.println(joinPoint.getArgs() + " args");
+        System.out.println(joinPoint.getStaticPart() + " static part");
+        System.out.println(joinPoint.getKind() + " kind");
+        System.out.println(joinPoint.getSignature() + " signature");
         System.out.println("before course service");
     }
 /*
