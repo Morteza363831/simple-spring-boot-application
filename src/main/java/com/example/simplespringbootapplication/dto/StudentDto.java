@@ -2,9 +2,17 @@ package com.example.simplespringbootapplication.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class StudentDto {
     long id;
+    long courseId;
     String name;
-    String address;
+    String password;
+    String City;
+    String street;
+    String plaqueNumber;
+
+
 }

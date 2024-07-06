@@ -18,7 +18,4 @@ public interface StudentRepository extends PagingAndSortingRepository<Student,Lo
     List<Student> findStudentByNameEndingWith(String endingWith);
 
     List<Student> findStudentByNameStartingWith(String name);
-
-
-
 }

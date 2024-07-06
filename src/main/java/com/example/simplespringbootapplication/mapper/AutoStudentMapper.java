@@ -10,14 +10,16 @@ import org.modelmapper.internal.bytebuddy.build.Plugin;
 @Mapper
 public interface AutoStudentMapper {
 
-    AutoStudentMapper MAPPER = Mappers.getMapper(AutoStudentMapper.class);
+    AutoStudentMapper studentMapper = Mappers.getMapper(AutoStudentMapper.class);
 
 
-    @Mapping(target = "address",source = ".")
+    //@Mapping(target = "address",source = ".")
     StudentDto mapToStudentDto(Student student);
 
 
-    default String getFullAddress(Student student) {
+    Student mapToStudent(StudentDto studentDto);
+
+    /*default String getFullAddress(Student student) {
         return student.getCity() + " " + student.getStreet() + " " + student.getPlaqueNumber();
-    }
+    }*/
 }

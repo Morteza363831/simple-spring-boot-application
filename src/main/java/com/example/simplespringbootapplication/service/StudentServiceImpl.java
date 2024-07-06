@@ -1,6 +1,7 @@
 package com.example.simplespringbootapplication.service;
 
 import com.example.simplespringbootapplication.dto.StudentDto;
+import com.example.simplespringbootapplication.entity.Course;
 import com.example.simplespringbootapplication.entity.Student;
 import com.example.simplespringbootapplication.mapper.AutoStudentMapper;
 import com.example.simplespringbootapplication.repository.StudentRepository;
@@ -28,10 +29,21 @@ public class StudentServiceImpl implements StudentService{
 
 
     @Override
-    public Student addStudent(Student student) {
-        studentRepository.save(student);
-        return student;
+    public Student addStudent(StudentDto addStudentDto) {
+        Student addStudent = modelMapper.map(addStudentDto,Student.class);
+        return studentRepository.save(addStudent);
     }
+
+
+    @Override
+    public Student updateStudent(Student updateStudent) {
+        for (Course c : updateStudent.getCourses()) {
+        }
+        Student student = studentRepository.findById(updateStudent.getId()).get();
+        student.setCourses(updateStudent.getCourses());
+        return studentRepository.save(student);
+    }
+
 
     @Override
     public StudentDto findStudentById(Long id) {
@@ -39,6 +51,7 @@ public class StudentServiceImpl implements StudentService{
         StudentDto studentDto = modelMapper.map(student, StudentDto.class);
         return studentDto;
     }
+
 
     @Override
     public List<StudentDto> findAllStudents(int pageNumber, int pageSize) {
@@ -49,15 +62,14 @@ public class StudentServiceImpl implements StudentService{
         List<StudentDto> studentDtoList = new ArrayList<>();
         if (studentPage.hasContent()) {
             for (Student student : studentPage.getContent()) {
-                System.out.println(student.getCity());
-                StudentDto studentDto = AutoStudentMapper.MAPPER.mapToStudentDto(student);
+                StudentDto studentDto = AutoStudentMapper.studentMapper.mapToStudentDto(student);
                 //StudentDto studentDto = modelMapper.map(student, StudentDto.class);
-                System.out.println(studentDto.getAddress());
                 studentDtoList.add(studentDto);
             }
         }
         return studentDtoList;
     }
+
 
     @Override
     public List<StudentDto> findStudentsByNameEndingWith(String endingWith) {
@@ -70,6 +82,7 @@ public class StudentServiceImpl implements StudentService{
         return studentDtoList;
     }
 
+
     @Override
     public List<StudentDto> findStudentsByNameStartingWith(String name) {
         List<Student> studentList = studentRepository.findStudentByNameStartingWith(name);
@@ -80,8 +93,6 @@ public class StudentServiceImpl implements StudentService{
         }
         return studentDtoList;
     }
-
-
 
 
 }

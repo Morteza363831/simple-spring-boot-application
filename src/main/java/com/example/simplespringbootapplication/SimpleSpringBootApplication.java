@@ -24,11 +24,9 @@ public class SimpleSpringBootApplication {
         modelMapper.createTypeMap(Student.class,StudentDto.class).addMappings(mapper -> {
             mapper.map(Student::getName, StudentDto::setName);
             mapper.map(Student::getId, StudentDto::setId);
-        }).setPostConverter(context -> {
-            StudentDto dto = context.getDestination();
-            Student source = context.getSource();
-            dto.setAddress(String.format("%s, %s, %s", source.getCity(), source.getStreet(), source.getPlaqueNumber()));
-            return dto;
+            mapper.map(Student::getCity,StudentDto::setCity);
+            mapper.map(Student::getStreet,StudentDto::setStreet);
+            mapper.map(Student::getPlaqueNumber,StudentDto::setPlaqueNumber);
         });
         return modelMapper;
     }
