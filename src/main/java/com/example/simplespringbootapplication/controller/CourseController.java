@@ -31,4 +31,6 @@ public class CourseController {
     public List<CourseDto> findAllCoursesBySemester(@PathVariable String semester) {
         return courseService.findCoursesBySemester(semester);
     }
+
+
 }
